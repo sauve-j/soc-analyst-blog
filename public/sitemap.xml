@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>http://localhost:1313/soc-analyst-blog/posts/building-my-soc-home-lab/</loc>
+    <lastmod>2026-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/soc-analyst-blog/tags/edr/</loc>
+    <lastmod>2026-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/soc-analyst-blog/tags/elastic/</loc>
+    <lastmod>2026-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/soc-analyst-blog/tags/lab-setup/</loc>
+    <lastmod>2026-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/soc-analyst-blog/posts/</loc>
+    <lastmod>2026-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/soc-analyst-blog/tags/siem/</loc>
+    <lastmod>2026-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/soc-analyst-blog/tags/soc/</loc>
+    <lastmod>2026-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/soc-analyst-blog/</loc>
+    <lastmod>2026-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/soc-analyst-blog/tags/</loc>
+    <lastmod>2026-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/soc-analyst-blog/about/</loc>
+  </url><url>
+    <loc>http://localhost:1313/soc-analyst-blog/categories/</loc>
+  </url>
+</urlset>

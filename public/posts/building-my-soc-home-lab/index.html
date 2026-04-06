@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="dark">
+
+<head><script src="/soc-analyst-blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=soc-analyst-blog/livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Building a SOC Home Lab from Scratch | SOC Analyst Portfolio</title>
+<meta name="keywords" content="lab-setup, elastic, siem, edr, soc">
+<meta name="description" content="How I built a full SOC environment with Elastic SIEM, Elastic Defend EDR, Sysmon, Velociraptor, and a Kali attacker machine to simulate real-world investigations.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/soc-analyst-blog/posts/building-my-soc-home-lab/">
+<link crossorigin="anonymous" href="/soc-analyst-blog/assets/css/stylesheet.4ef2299ae814559c4055cd3d15919aff78737e44fa7af337c506246832ba458a.css" integrity="sha256-TvIpmugUVZxAVc09FZGa/3hzfkT6evM3xQYkaDK6RYo=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/soc-analyst-blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/soc-analyst-blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/soc-analyst-blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/soc-analyst-blog/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/soc-analyst-blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/soc-analyst-blog/posts/building-my-soc-home-lab/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/soc-analyst-blog/" accesskey="h" title="SOC Analyst Portfolio (Alt + H)">SOC Analyst Portfolio</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/soc-analyst-blog/tags/investigation/" title="Investigations">
+                    <span>Investigations</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/soc-analyst-blog/tags/lab-setup/" title="Lab Setup">
+                    <span>Lab Setup</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/soc-analyst-blog/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/soc-analyst-blog/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/soc-analyst-blog/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Building a SOC Home Lab from Scratch
+    </h1>
+    <div class="post-meta"><span title='2026-04-06 00:00:00 +0000 UTC'>April 6, 2026</span>&nbsp;·&nbsp;<span>2 min</span>
+
+</div>
+  </header> 
+  <div class="post-content"><h2 id="the-goal">The Goal<a hidden class="anchor" aria-hidden="true" href="#the-goal">#</a></h2>
+<p>Build a realistic security operations environment where I can simulate attacks, detect them through a SIEM, investigate alerts, and document the full triage process. The same workflow used in production SOCs.</p>
+<h2 id="architecture">Architecture<a hidden class="anchor" aria-hidden="true" href="#architecture">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Machine</th>
+          <th>OS</th>
+          <th>IP Address</th>
+          <th>Role</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>elk-siem</td>
+          <td>Ubuntu 22.04</td>
+          <td>10.0.0.10</td>
+          <td>Elastic SIEM + Fleet Server</td>
+      </tr>
+      <tr>
+          <td>win-ep-01</td>
+          <td>Windows 10</td>
+          <td>10.0.0.20</td>
+          <td>Windows Endpoint</td>
+      </tr>
+      <tr>
+          <td>lin-ep-01</td>
+          <td>Ubuntu 22.04</td>
+          <td>10.0.0.30</td>
+          <td>Linux Endpoint</td>
+      </tr>
+      <tr>
+          <td>vr-server</td>
+          <td>Ubuntu 22.04</td>
+          <td>10.0.0.40</td>
+          <td>Velociraptor DFIR Server</td>
+      </tr>
+      <tr>
+          <td>kali-atk</td>
+          <td>Kali Linux</td>
+          <td>10.0.0.50</td>
+          <td>Attacker Machine</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="why-these-tools">Why These Tools<a hidden class="anchor" aria-hidden="true" href="#why-these-tools">#</a></h2>
+<p><strong>Elastic Security</strong> as the SIEM because it&rsquo;s widely deployed in enterprise SOCs and the free tier includes detection rules mapped to MITRE ATT&amp;CK out of the box.</p>
+<p><strong>Elastic Defend</strong> for EDR it integrates directly with the SIEM and provides process trees, file events, and network telemetry similar to what you&rsquo;d see with CrowdStrike or SentinelOne.</p>
+<p><strong>Sysmon</strong> on Windows with the Olaf Hartong modular config for deep process, network, and file visibility that standard Windows logging misses.</p>
+<p><strong>Auditd</strong> on Linux to capture system calls, file access, and command execution, the Linux equivalent of Sysmon.</p>
+<p><strong>Velociraptor</strong> for on-demand forensic collection and threat hunting during investigations.</p>
+<p><strong>Kali Linux</strong> as the attacker machine, running on a separate laptop connected via a dedicated network segment.</p>
+<h2 id="setup-process">Setup Process<a hidden class="anchor" aria-hidden="true" href="#setup-process">#</a></h2>
+<p><em>Detailed setup steps coming in follow-up posts for each component.</em></p>
+<h2 id="whats-next">What&rsquo;s Next<a hidden class="anchor" aria-hidden="true" href="#whats-next">#</a></h2>
+<p>With the environment ready, I&rsquo;ll be running attack simulations using Atomic Red Team and C2 frameworks, then investigating the alerts they generate. Documenting each investigation as a full writeup in my <a href="https://github.com/sauve-j/soc-portfolio">portfolio</a>.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/soc-analyst-blog/tags/lab-setup/">Lab-Setup</a></li>
+      <li><a href="http://localhost:1313/soc-analyst-blog/tags/elastic/">Elastic</a></li>
+      <li><a href="http://localhost:1313/soc-analyst-blog/tags/siem/">Siem</a></li>
+      <li><a href="http://localhost:1313/soc-analyst-blog/tags/edr/">Edr</a></li>
+      <li><a href="http://localhost:1313/soc-analyst-blog/tags/soc/">Soc</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/soc-analyst-blog/">SOC Analyst Portfolio</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

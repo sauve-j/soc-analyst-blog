@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Lab-Setup on SOC Analyst Portfolio</title>
+    <link>http://localhost:1313/soc-analyst-blog/tags/lab-setup/</link>
+    <description>Recent content in Lab-Setup on SOC Analyst Portfolio</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 06 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/soc-analyst-blog/tags/lab-setup/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building a SOC Home Lab from Scratch</title>
+      <link>http://localhost:1313/soc-analyst-blog/posts/building-my-soc-home-lab/</link>
+      <pubDate>Mon, 06 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/soc-analyst-blog/posts/building-my-soc-home-lab/</guid>
+      <description>How I built a full SOC environment with Elastic SIEM, Elastic Defend EDR, Sysmon, Velociraptor, and a Kali attacker machine to simulate real-world investigations.</description>
+    </item>
+  </channel>
+</rss>

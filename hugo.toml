@@ -1,0 +1,38 @@
+baseURL = "https://sauve-j.github.io/soc-analyst-blog/"
+languageCode = "en-us"
+title = "SOC Analyst Portfolio"
+theme = "PaperMod"
+
+[params]
+  description = "Hands-on investigations, detection engineering, and incident response writeups"
+  ShowReadingTime = true
+  ShowShareButtons = false
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  defaultTheme = "dark"
+
+[params.homeInfoParams]
+  Title = "Blue Team Notes"
+  Content = "Hands-on threat detection, investigation, and incident response from a live home lab environment."
+
+[[params.socialIcons]]
+  name = "github"
+  url = "https://github.com/sauve-j"
+
+[menu]
+[[menu.main]]
+  identifier = "investigations"
+  name = "Investigations"
+  url = "/tags/investigation/"
+  weight = 1
+[[menu.main]]
+  identifier = "lab-setup"
+  name = "Lab Setup"
+  url = "/tags/lab-setup/"
+  weight = 2
+[[menu.main]]
+  identifier = "about"
+  name = "About"
+  url = "/about/"
+  weight = 3
