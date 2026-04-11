@@ -39,5 +39,7 @@ Build a realistic security operations environment where I can simulate attacks, 
 *Detailed setup steps coming in follow-up posts for each component.*
 
 ## What's Next
+Setting up Elastic, Kibana and my fleet server agent. 
 
-With the environment ready, I'll be running attack simulations using Atomic Red Team and C2 frameworks, then investigating the alerts they generate. Documenting each investigation as a full writeup in my [portfolio](https://github.com/sauve-j/soc-portfolio).
+
+ [portfolio](https://github.com/sauve-j/soc-portfolio).
