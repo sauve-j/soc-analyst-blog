@@ -1,6 +1,6 @@
 ---
 title: "Setting Up the SIEM"
-date: 2026-04-06
+date: 2026-04-07
 draft: false
 tags: ["lab-setup", "elastic", "siem"]
 summary: "First piece of my home lab is up. Elastic stack running on Ubuntu."
