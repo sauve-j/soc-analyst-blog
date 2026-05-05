@@ -6,7 +6,7 @@ tags: ["lab-setup", "elastic", "siem", "edr", "detection"]
 summary: "Enabled detection rules, installed Elastic Defend on both endpoints, built a triage dashboard, and got my first alerts."
 ---
 
-The SIEM was collecting logs but it wasn't doing anything with them. This session I added the detection and alerting layer: Elastic Defend as the EDR on both endpoints, prebuilt detection rules enabled, and a basic custom triage dashboard to monitor everything.
+The SIEM was collecting logs but it wasn't doing anything with them. I added the detection and alerting layer: Elastic Defend as the EDR on both endpoints, enabled some prebuilt detection rules and a basic custom triage dashboard to monitor everything.
 
 ## Elastic Defend
 
@@ -16,13 +16,13 @@ I also had to add the Windows integration separately and enable the Sysmon Opera
 
 ## Detection Rules
 
-Elastic have hundreds of prebuilt detection rules. I installed all of them but only enabled the ones relevant to my lab: everything tagged "OS: Windows" and "OS: Linux", plus rules related to PowerShell, LSASS, scheduled tasks, and Elastic Defend. All the cloud and SaaS rules (AWS, Azure, Okta, Google Workspace) stayed disabled since I don't have those data sources for now. I will also integrate some network security policies later.  
+As I expected, Elastic have hundreds of prebuilt detection rules. I installed most of them and only enabled the ones relevant to my lab: everything tagged "OS: Windows" and "OS: Linux", plus rules related to PowerShell, LSASS, scheduled tasks, and Elastic Defend. All the cloud and SaaS rules (AWS, Azure, Okta, Google Workspace) stayed disabled since I don't have those data sources for now. I will also integrate some network security policies later.   
 
 Before any of this worked, I had to fix a "Detection engine permissions required" error. Kibana needs encryption keys set in its config before the security features will run. One command to generate the keys, paste them into kibana.yml and restart the service. Small thing but it blocks everything if you miss it.
 
 ## The Dashboard
 
-Built a triage dashboard with five panels that give me a quick overview of what's happening across the lab:
+Built a triage dashboard with five panels that give me a quick overview of what's happening.
 
 - Alert trend over time
 - Severity breakdown to prioritize
@@ -30,17 +30,17 @@ Built a triage dashboard with five panels that give me a quick overview of what'
 - Which hosts are generating alerts
 - Which MITRE ATT&CK tactics are being triggered
 
-All five panels pull from the security alerts index. Right now everything is coming from win-ep-01 since that's where most of the activity is (I did not touch the linux endpoint yet).
+Right now everything is coming from win-ep-01 since that's where most of the activity is (I did not touch much the linux endpoint yet).
 
 ![SOC Triage Dashboard](5Panels.png)
 
 ## First Alerts
 
-I didn't even need to run attack simulations. Within minutes of enabling everything, alerts started firing from the PowerShell commands I ran while setting things up via the Windows endpoint. The rules caught basic powershell command like "powershell -enc dwBoAG8AYQBtAGkA" a basic whoami command in base64 encode and suspicious PowerShell arguments triggered a medium severity alert. Also Invoke-AtomicRedTeam module files being created on disk triggered a high severity alert and flagged them as potential hack tools. Elastic Defend flagged a malware prevention alert from one of the processes.
+Within a few minutes of enabling everything, alerts started firing from the PowerShell commands I ran while setting things up via the Windows endpoint. The rules caught basic powershell command like "powershell -enc dwBoAG8AYQBtAGkA" a basic whoami command in base64 encode. It did triggered a medium severity alert. Also Invoke-AtomicRedTeam module files being created triggered a high severity alert and flagged them as potential hack tools. Elastic Defend flagged a malware prevention alert from one of the processes.
 
 ![Alerts page showing 7 alerts](7Alerts.png)
 
-Seeing alerts show up in the dashboard I built myself is very satisfying. Here's some further details of one the alert.
+Everything seems to work well. Here's some further details of one the alert.
 
 ![Alert detail view](FirstAlert.png)
 
