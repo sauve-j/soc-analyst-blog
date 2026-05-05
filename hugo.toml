@@ -13,8 +13,8 @@ theme = "PaperMod"
   defaultTheme = "dark"
 
 [params.homeInfoParams]
-  Title = "Blue Team Notes"
-  Content = "Hands-on threat detection, investigation, and incident response from a live home lab environment."
+  Title = "Welcome to my lab !!"
+  Content = "Hands-on threat detection, investigation, and incident response from my own home lab environment."
 
 [[params.socialIcons]]
   name = "github"
